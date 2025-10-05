@@ -1,0 +1,19 @@
+Para mitgar esse tipo de ataque o site da owasp cita os seguintes tópicos:
+
+•	Sempre que possível, implemente a autenticação multifator para evitar ataques automatizados de preenchimento de credenciais, força bruta e reutilização de credenciais roubadas.
+
+•	Não envie ou implante com nenhuma credencial padrão, principalmente para usuários administradores.
+
+•	Implemente verificações de senhas fracas, como testar senhas novas ou alteradas em uma lista das 10.000 piores senhas.
+
+•	Alinhe as políticas de comprimento, complexidade e rotação de senhas com as diretrizes do Instituto Nacional de Padrões e Tecnologia (NIST) 800-63b na seção 5.1.1 para Segredos Memorizados ou outras políticas de senhas modernas e baseadas em evidências.
+
+•	Garanta que o registro, a recuperação de credenciais e os caminhos da API sejam protegidos contra ataques de enumeração de contas usando as mesmas mensagens para todos os resultados.
+
+•	Limite ou adie cada vez mais as tentativas de login malsucedidas, mas tome cuidado para não criar um cenário de negação de serviço. Registre todas as falhas 
+e alerte os administradores quando forem detectados ataques de preenchimento de credenciais, força bruta ou outros.
+
+•	Utilize um gerenciador de sessão integrado, seguro e do lado do servidor que gere um novo ID de sessão aleatório com alta entropia após o login. O identificador de sessão não deve estar na URL,
+deve ser armazenado com segurança e invalidado após logout, inatividade e tempos limite absolutos.
+
+https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/
