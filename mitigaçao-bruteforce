@@ -1,0 +1,19 @@
+De acordo com o site da crowdstrike
+
+https://www.crowdstrike.com/en-us/cybersecurity-101/cyberattacks/brute-force-attack/
+
+As melhores maneiras de evitar um ataque de bruteforce são:
+
+Use autenticação multifator
+Quando os usuários são obrigados a oferecer mais de uma forma de autenticação, como uma senha e uma impressão digital ou uma senha e um token de segurança único, é menos provável que um ataque de força bruta tenha sucesso.
+
+Implementar higiene de TI
+Obtenha visibilidade sobre o uso de credenciais em todo o ambiente e exija que as senhas sejam alteradas regularmente.
+
+Configure políticas que rejeitem senhas fracas
+Senhas mais longas nem sempre são a melhor opção. O que realmente ajuda é exigir uma combinação de letras maiúsculas e minúsculas, além de caracteres especiais. Oriente os usuários sobre as melhores práticas de senha, 
+como evitar adicionar quatro números no final e evitar números comuns, como aqueles que começam com 1 ou 2. Forneça uma ferramenta de gerenciamento de senhas para evitar que os usuários recorram a senhas fáceis de lembrar
+e use uma ferramenta de descoberta que exponha as senhas padrão em dispositivos que não foram alterados.
+
+Implementar caça proativa a ameaças
+A caça a ameaças pode expor os tipos de ataques que as medidas de segurança padrão podem não detectar. Se um ataque de força bruta tiver sido usado para invadir o sistema, um caçador de ameaças pode detectar o ataque mesmo que ele esteja operando sob o disfarce de credenciais legítimas.
