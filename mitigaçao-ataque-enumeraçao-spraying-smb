@@ -1,0 +1,62 @@
+Para mitigar esse tipo de ataque O site da Microsoft  da  os seguintes direcionamentos:
+
+Recursos de segurança de SMB
+Entender os recursos de segurança SMB pode ajudar os usuários a proteger seus dados confidenciais e impedir o acesso não autorizado a recursos compartilhados. A próxima seção fornece uma breve visão geral desses recursos.
+
+Assinatura SMB
+A partir do Windows 11 24H2 e do Windows Server 2025, todas as conexões SMB de saída e entrada agora precisam ser assinadas por padrão. Anteriormente, a assinatura de SMB era exigida apenas por padrão para conexões com compartilhamentos chamados SYSVOL e NETLOGON 
+e para clientes de controladores de domínio do AD.
+A assinatura SMB evita a violação de dados e ataques de retransmissão que roubam credenciais. Ao tornar a assinatura obrigatória por padrão, os administradores e usuários não precisam ser especialistas em segurança de protocolo de rede SMB para habilitar 
+esse importante recurso de segurança. Habilitar a assinatura SMB faz com que clientes e servidores aceitem apenas pacotes assinados e rejeitem qualquer um que não esteja. Os pacotes de usuários convidados são rejeitados, o que significa que o recurso 
+que permite que os usuários se conectem a um servidor sem fornecer credenciais (fallback de convidado) está desabilitado. Essa medida de segurança ajuda a evitar acesso não autorizado e violações de dados, exigindo que os usuários se autentiquem antes de 
+acessar um servidor, o que garante que apenas usuários autorizados possam acessar o servidor e seus recursos.
+
+Portas alternativas SMB
+O cliente SMB pode ser usado para estabelecer conexões com portas alternativas para TCP, QUIC e RDMA. Essas portas podem diferir das portas padrão atribuídas pela IANA (Internet Assigned Numbers Authority) e pela IETF (Internet Engineering Task Force), 
+que são 445, 443 e 5445 para TCP, QUIC e RDMA, respectivamente.
+No Windows Server, é possível hospedar uma conexão SMB sobre QUIC em uma porta de firewall permitida, mas não necessariamente na porta padrão 443. No entanto, é importante observar que a conexão com portas alternativas só será possível se o 
+servidor SMB estiver configurado para escutar nessa porta específica. Além disso, é possível configurar a implantação para não permitir o uso de portas alternativas ou restringir seu uso a determinados servidores.
+
+Melhorias na auditoria de SMB
+O SMB agora tem a capacidade de auditar o uso do SMB sobre o QUIC e oferece suporte à criptografia e assinatura de terceiros. Esses recursos podem ser utilizados no servidor SMB e no nível do cliente. Se você estiver usando dispositivos Windows ou Windows Server,
+agora é mais simples determinar se eles estão usando SMB em vez de QUIC. Você também pode verificar mais facilmente se o software de terceiros dá suporte à assinatura e criptografia antes de torná-los obrigatórios.
+
+Limitador de taxa de autenticação SMB
+O serviço de servidor SMB agora limita o número de tentativas de autenticação com falha. Isso é aplicável ao compartilhamento de arquivos SMB no Windows Server e no Windows Client. Ataques de força bruta tentam adivinhar nomes de usuário e senhas e 
+podem bombardear o servidor SMB com dezenas a milhares de tentativas por segundo. O limitador de taxa de autenticação SMB agora está habilitado por padrão, com um atraso de 2 segundos entre cada tentativa de autenticação baseada em NTLM ou Kerberos com KDC Local.
+Como resultado, um ataque que envia 300 palpites por segundo durante 5 minutos (90.000 tentativas) agora levaria 50 horas para ser concluído. Isso torna muito menos provável que um invasor persista com esse método.
+
+Mandato de criptografia de cliente SMB agora com suporte
+O cliente SMB agora pode exigir criptografia para todas as conexões SMB de saída. Essa medida garante o mais alto nível de segurança de rede e coloca a assinatura SMB no mesmo nível de gerenciamento. Uma vez habilitado, o cliente SMB só se conecta a um 
+servidor SMB que dá suporte a SMB 3.0 ou posterior e criptografia SMB. É possível que um servidor SMB de terceiros suporte SMB 3.0, mas não criptografia SMB. Ao contrário da assinatura SMB, a criptografia não é obrigatória por padrão.
+
+Gerenciamento de dialeto SMB
+Agora é possível impor o uso de versões de protocolo SMB 2 e 3. Anteriormente, o servidor e o cliente SMB só davam suporte à negociação automática do dialeto correspondente mais alto do SMB 2.0.2 ao 3.1.1. Com esse novo recurso, você pode impedir 
+intencionalmente que versões de protocolo ou dispositivos mais antigos se conectem. Por exemplo, você pode especificar que as conexões usem apenas SMB 3.1.1, o dialeto mais seguro do protocolo. O mínimo e o máximo podem ser definidos independentemente no 
+cliente e no servidor SMB, e você pode optar por definir apenas um mínimo, se desejar.
+
+Alterações de porta padrão do SMB Firewall
+As portas NetBIOS SMB não estão mais incluídas nas regras de firewall integradas. Essas portas eram necessárias apenas para o uso do SMB1, que agora está obsoleto e removido por padrão. Essa modificação alinha as regras de firewall SMB com o comportamento 
+padrão da função Servidor de Arquivos do Windows Server. Os administradores podem reconfigurar as regras para restaurar as portas herdadas.
+
+Autenticação de convidado não segura SMB
+Por padrão, o Windows 11 Pro não permite mais conexões de convidado de cliente SMB ou fallback de convidado para um servidor SMB. Isso alinha o Windows 11 Pro com o comportamento das edições Windows 10 e Windows 11 Enterprise, Education e Pro for Workstation.
+Os logons de convidado não exigem senhas e não dão suporte a recursos de segurança padrão, como assinatura e criptografia.
+Permitir que um cliente use logons de convidado coloca o usuário em risco de cenários de ataque adversário no meio ou cenários de servidor mal-intencionado. Por exemplo, um ataque de phishing que engana um usuário para abrir um arquivo em um compartilhamento
+remoto ou um servidor falsificado que convence um cliente de que ele é legítimo. O invasor não precisa saber as credenciais do usuário e uma senha fraca é desconsiderada. Somente dispositivos remotos de terceiros podem exigir acesso de convidado por padrão.
+
+Bloqueio NTLM SMB	
+O cliente SMB agora pode impedir a autenticação NTLM para conexões de saída remotas. Isso modifica o comportamento anterior de sempre usar a autenticação negociada que pode fazer downgrade de Kerberos para NTLM. Ao bloquear a autenticação NTLM, isso protege 
+os dispositivos cliente contra o envio de solicitações NTLM para servidores mal-intencionados, mitigando assim ataques de força bruta, cracking, retransmissão e passagem de hash.
+O bloqueio de NTLM é necessário para impor a autenticação de uma organização ao Kerberos, que é mais seguro porque verifica identidades com seu sistema de tíquetes e criptografia superior. Os administradores podem especificar exceções para permitir a 
+autenticação NTLM por SMB para servidores específicos.
+
+Controle de acesso de cliente SMB sobre QUIC
+O controle de acesso de cliente SMB sobre QUIC permite limitar quais clientes podem acessar SMB em servidores QUIC. O comportamento anterior permitia tentativas de conexão de qualquer cliente que confiasse na cadeia de emissão de certificados do servidor QUIC.
+Com o controle de acesso do cliente, uma lista de permissões e uma lista de bloqueios são criadas para que os dispositivos se conectem ao servidor de arquivos.
+Um cliente agora deve ter seu próprio certificado e estar em uma lista de permissões para estabelecer a conexão QUIC antes que qualquer conexão SMB possa ocorrer. O controle de acesso do cliente fornece às organizações proteção adicional sem alterar a 
+autenticação usada durante a conexão SMB, e a experiência do usuário permanece inalterada. Além disso, você pode desabilitar totalmente o cliente SMB sobre QUIC ou permitir apenas conexões com servidores específicos.
+
+
+https://learn.microsoft.com/pt-br/windows-server/storage/file-server/smb-security-hardening
+
